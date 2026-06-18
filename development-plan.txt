@@ -1,0 +1,300 @@
+🧱 0. High‑Level Architecture Overview
+Your system has five major subsystems:
+
+Input Layer — Parse cURL → Normalized Request Model
+
+Probing Engine — Execute request(s) → Collect Samples
+
+Inference Engine — Schema + Behaviour inference
+
+Model Store — Versioned endpoint models
+
+Codegen + UI — Generate clients + human review workflow
+
+This is the backbone of your product.
+
+1. Input Layer — cURL → Normalized Request Model
+Responsibilities
+Accept raw cURL input
+
+Tokenize + parse flags
+
+Extract:
+
+method
+
+URL
+
+headers
+
+body
+
+auth hints
+
+Output
+A ParsedRequest object stored in DB.
+
+Key components
+cURL tokenizer
+
+Request normalizer
+
+Auth classifier
+
+2. Request Template Store
+Responsibilities
+Persist parsed requests
+
+Allow engineers to edit + save templates
+
+Support multiple variants (different tokens, tenants, etc.)
+
+Entities
+RequestTemplate
+
+RequestVariant
+
+3. Probing Engine — Execute Requests & Capture Samples
+Responsibilities
+Execute the request safely
+
+Optionally run variations:
+
+pagination
+
+query params
+
+retries
+
+Capture:
+
+status
+
+headers
+
+body
+
+latency
+
+Output
+A list of Sample objects.
+
+Components
+Probing worker
+
+Retry/backoff logic
+
+Sample storage
+
+4. Sample Store
+Responsibilities
+Persist all samples
+
+Allow UI to show:
+
+raw responses
+
+headers
+
+diffs between samples
+
+Entities
+Sample
+
+SampleSet (grouped by endpoint)
+
+5. Endpoint Identification & Grouping
+Responsibilities
+Convert raw URLs into endpoint patterns:
+
+/users/123 → /users/{id}
+
+Group samples by endpoint
+
+Output
+An EndpointModel record.
+
+Components
+Path pattern extractor
+
+Query param classifier
+
+6. Schema Inference Engine
+Responsibilities
+Merge multiple JSON samples
+
+Infer:
+
+field types
+
+optionality
+
+nested structures
+
+enums
+
+Produce:
+
+JSON Schema
+
+TypeScript types
+
+OpenAPI fragments
+
+Components
+Schema inference logic
+
+Type widening rules
+
+Schema merge engine
+
+Output
+A SchemaVersion object.
+
+7. Behaviour Inference Engine
+Responsibilities
+Infer API behaviour patterns:
+
+Pagination
+
+Rate limits
+
+Auth failures
+
+Caching
+
+Error envelopes
+
+Components
+Pagination detector
+
+Rate-limit header parser
+
+Error classifier
+
+Output
+A BehaviourModel.
+
+Deep dive
+API behaviour modelling
+
+8. Versioned Endpoint Model Store
+Responsibilities
+Store:
+
+SchemaVersion[]
+
+BehaviourModel[]
+
+Track:
+
+approved version
+
+proposed version
+
+Provide diffs for UI
+
+Entities
+EndpointModel
+
+SchemaVersion
+
+BehaviourVersion
+
+9. Review & Approval Workflow (UI)
+Responsibilities
+Show engineers:
+
+samples
+
+inferred schema
+
+diffs
+
+behaviour suggestions
+
+Allow:
+
+approve
+
+edit
+
+reject
+
+Components
+Schema diff viewer
+
+Sample explorer
+
+Behaviour editor
+
+Deep dive
+UI design for API unpacker
+
+10. Codegen Engine — Generate Clients & Middleware
+Responsibilities
+Generate:
+
+TypeScript client
+
+Optional Node middleware
+
+Optional OpenAPI spec
+
+Versioned artifacts
+
+Components
+Template engine (Handlebars, EJS, or AST-based)
+
+Artifact versioning
+
+Regeneration pipeline
+
+Deep dive
+Code generator design
+
+11. Live Feedback Loop (Optional Phase 2)
+Responsibilities
+Middleware logs upstream responses
+
+Detect:
+
+schema drift
+
+new fields
+
+new error patterns
+
+Create new Proposed Schema vN+1
+
+Components
+Telemetry ingestion
+
+Drift detector
+
+Auto-propose schema updates
+
+12. Platform Architecture (React + TS)
+Frontend (React)
+cURL input page
+
+Probe results viewer
+
+Schema diff UI
+
+Behaviour editor
+
+Codegen download page
+
+Backend (Node/TS)
+REST API
+
+Probing worker
+
+Inference engine
+
+Codegen service
+
+DB (Postgres)
+
+Monorepo structu
