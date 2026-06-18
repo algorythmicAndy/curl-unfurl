@@ -1,6 +1,6 @@
 # POC universal cURL unpacking, parsing, tokenization and type inferance engine
 
-This was inspired by a spur of the moment thought whilst practicing various methodologies for injesting, error handling,
+This was inspired by a spur of the moment thought whilst practicing various methodologies for ingesting, error handling,
 and outputting normalised api query resolutions.
 
 After some market research, it is clear there are both commercial and open source offerings which do parts of the entire stack
