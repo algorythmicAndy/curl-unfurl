@@ -8,10 +8,10 @@ this library could offer, but none are integrated well, nor do they work togethe
 
 ## Project aim:
 
-Our aim is to produce a bespoke one stop shop, if you like, for fast api onboarding and integration. This will generate infereed 
-schema, normalise indeterminate structures, update dyanmic templated definitions which are designed to self review and improve as
+Our aim is to produce a bespoke one stop shop, if you like, for fast api onboarding and integration. This will generate infered 
+schema, normalise indeterminate structures, update dynamic templated definitions which are designed to self review and improve as
 APIs inevitably change over time.
 
-The vision is to provide a power tool for engineers to review API mutations and decide on a course of action, being shown how auth,
-headers, data response changes and the impact this will have on internal usage, inclusing insofar as middleware and query lifecycle
+The vision is to provide a power tool for engineers to review API mutations and decide on a course of action, being shown auth,
+headers, data response changes and the impact this will have on internal usage, including insofar as middleware and query lifecycle
 functions.
