@@ -1,0 +1,14 @@
+{
+  "name": "@curl-unfurl/unfurl-core",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "vitest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
